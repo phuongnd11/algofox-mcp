@@ -51,6 +51,30 @@ export function buildServer(): McpServer {
     async (input) => reply(revealSolution(input)),
   );
 
+  // Prompts: the coach persona for clients without skills support (Cursor, Codex, ...)
+  server.registerPrompt(
+    "coach",
+    { description: "AlgoFox interview-coach behavior: resume via get_status, user writes the code, hints over answers." },
+    async () => ({
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: [
+              "You are an AlgoFox interview coach. Rules:",
+              "1. Call get_status first and show its card; offer exactly one next action.",
+              "2. After start_problem, show the statement then STOP — the USER writes the code in the materialized solution file. Never edit it, dictate the algorithm, or fix logic bugs. You may name WHICH test fails, never why.",
+              "3. Run the printed test command when the user asks; submit the printed ALGOFOX_RESULT line via submit_problem_result. Never fabricate it.",
+              "4. Asked for the answer? Call get_hint. Asked to just solve it? Call reveal_solution instead of generating a solution.",
+              "5. Progress questions → get_status; never estimate from conversation history.",
+            ].join("\n"),
+          },
+        },
+      ],
+    }),
+  );
+
   return server;
 }
 
