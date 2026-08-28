@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-03",
+  "slug": "missing-number",
+  "title": "The Missing Number",
+  "topic": "arrays-hashing",
+  "difficulty": 1,
+  "estimatedMinutes": 8,
+  "tags": [
+    "math",
+    "arithmetic-series"
+  ],
+  "statement": {
+    "markdown": "`nums` contains `n` **distinct** integers drawn from the range `0..n` (inclusive) — so exactly one number from that range is absent. Return it.\n\nThere's a well-known O(1)-space trick. Can you find it?",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "All values are distinct and within 0..n"
+    ],
+    "examples": [
+      {
+        "input": "nums = [3, 0, 1]",
+        "output": "2",
+        "explanation": "n = 3; the range 0..3 is missing 2."
+      },
+      {
+        "input": "nums = [1]",
+        "output": "0"
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "missing_number",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          3,
+          0,
+          1
+        ]
+      ],
+      "expected": 2,
+      "kind": "example"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          1
+        ]
+      ],
+      "expected": 0,
+      "kind": "example"
+    },
+    {
+      "id": "t3",
+      "args": [
+        [
+          0
+        ]
+      ],
+      "expected": 1,
+      "kind": "edge",
+      "note": "missing the top of the range"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          0,
+          1
+        ]
+      ],
+      "expected": 2,
+      "kind": "typical"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [
+          9,
+          6,
+          4,
+          2,
+          3,
+          5,
+          7,
+          0,
+          1
+        ]
+      ],
+      "expected": 8,
+      "kind": "typical"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": 0,
+      "kind": "edge",
+      "note": "missing zero"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [
+          0,
+          2,
+          3
+        ]
+      ],
+      "expected": 1,
+      "kind": "typical"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          4,
+          2,
+          1,
+          0
+        ]
+      ],
+      "expected": 3,
+      "kind": "typical"
+    }
+  ],
+  "starters": {
+    "python": "def missing_number(nums):\n    \"\"\"nums holds n distinct values from 0..n. Return the absent one.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function missingNumber(nums) {\n  // nums holds n distinct values from 0..n. Return the absent one.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "If nothing were missing, what would the sum of 0..n be?",
+    "Sum of 0..n is n·(n+1)/2. Subtract the actual sum — the difference is the missing number."
+  ],
+  "solution": {
+    "python": "def missing_number(nums):\n    n = len(nums)\n    return n * (n + 1) // 2 - sum(nums)\n",
+    "javascript": "export function missingNumber(nums) {\n  const n = nums.length;\n  return (n * (n + 1)) / 2 - nums.reduce((a, b) => a + b, 0);\n}\n"
+  },
+  "solutionExplanation": "The full range 0..n sums to n·(n+1)/2. Since exactly one value is missing, the difference between that ideal sum and the actual sum is the answer. Time O(n), space O(1). (XOR-ing indices against values works too.)"
+}

@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-06",
+  "slug": "distinct-in-window",
+  "title": "Distinct in Every Window",
+  "topic": "arrays-hashing",
+  "difficulty": 2,
+  "estimatedMinutes": 15,
+  "tags": [
+    "sliding-window",
+    "hash-map"
+  ],
+  "statement": {
+    "markdown": "Given an integer array `nums` and a window size `k`, return an array where entry `i` is the number of **distinct** values in the window `nums[i .. i+k-1]`.\n\nIf `k` is 0 or larger than the array, return an empty array.\n\nRecomputing each window from scratch is O(n·k). Slide instead: what changes when the window moves one step right?",
+    "constraints": [
+      "0 <= nums.length <= 10^5",
+      "0 <= k <= 10^5"
+    ],
+    "examples": [
+      {
+        "input": "nums = [1, 2, 1, 3, 4, 2, 3], k = 4",
+        "output": "[3, 4, 4, 3]",
+        "explanation": "Windows: [1,2,1,3]→3, [2,1,3,4]→4, [1,3,4,2]→4, [3,4,2,3]→3."
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "distinct_in_window",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      },
+      {
+        "name": "k",
+        "type": "int"
+      }
+    ],
+    "returns": "int[]"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          1,
+          2,
+          1,
+          3,
+          4,
+          2,
+          3
+        ],
+        4
+      ],
+      "expected": [
+        3,
+        4,
+        4,
+        3
+      ],
+      "kind": "example"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          1,
+          1,
+          1
+        ],
+        2
+      ],
+      "expected": [
+        1,
+        1
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t3",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        3
+      ],
+      "expected": [
+        3
+      ],
+      "kind": "edge",
+      "note": "window equals array"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        4
+      ],
+      "expected": [],
+      "kind": "edge",
+      "note": "window larger than array"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [],
+        1
+      ],
+      "expected": [],
+      "kind": "edge",
+      "note": "empty array"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          4
+        ],
+        1
+      ],
+      "expected": [
+        1
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [
+          1,
+          2,
+          1,
+          2
+        ],
+        2
+      ],
+      "expected": [
+        2,
+        2,
+        2
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          5,
+          5,
+          5,
+          5
+        ],
+        1
+      ],
+      "expected": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t9",
+      "args": [
+        [
+          1,
+          2
+        ],
+        0
+      ],
+      "expected": [],
+      "kind": "edge",
+      "note": "zero-width window"
+    }
+  ],
+  "starters": {
+    "python": "def distinct_in_window(nums, k):\n    \"\"\"Return the distinct-value count of every length-k window.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function distinctInWindow(nums, k) {\n  // Return the distinct-value count of every length-k window.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "Keep a count map for the current window. Moving right adds one element and removes one.",
+    "Distinct count changes only when an added value's count becomes 1, or a removed value's count becomes 0.",
+    "Delete map entries when their count hits 0 so the map size IS the distinct count."
+  ],
+  "solution": {
+    "python": "def distinct_in_window(nums, k):\n    if k == 0 or k > len(nums):\n        return []\n    counts = {}\n    result = []\n    for i, value in enumerate(nums):\n        counts[value] = counts.get(value, 0) + 1\n        if i >= k:\n            out = nums[i - k]\n            counts[out] -= 1\n            if counts[out] == 0:\n                del counts[out]\n        if i >= k - 1:\n            result.append(len(counts))\n    return result\n",
+    "javascript": "export function distinctInWindow(nums, k) {\n  if (k === 0 || k > nums.length) return [];\n  const counts = new Map();\n  const result = [];\n  for (let i = 0; i < nums.length; i++) {\n    counts.set(nums[i], (counts.get(nums[i]) ?? 0) + 1);\n    if (i >= k) {\n      const out = nums[i - k];\n      const c = counts.get(out) - 1;\n      if (c === 0) counts.delete(out);\n      else counts.set(out, c);\n    }\n    if (i >= k - 1) result.push(counts.size);\n  }\n  return result;\n}\n"
+  },
+  "solutionExplanation": "Classic sliding window with a count map. Each step adds the entering element and (once the window is full) evicts the leaving one; deleting zero-count keys keeps the map's size equal to the distinct count, so each window is answered in O(1). Time O(n), space O(k)."
+}

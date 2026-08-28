@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-02",
+  "slug": "first-repeated-value",
+  "title": "First Repeated Value",
+  "topic": "arrays-hashing",
+  "difficulty": 1,
+  "estimatedMinutes": 8,
+  "tags": [
+    "hash-set"
+  ],
+  "statement": {
+    "markdown": "Given an array of integers `nums`, return the first value whose **second** appearance occurs earliest in the array. If no value repeats, return `-1`.\n\nIn other words: scanning left to right, which value is the first one you see for the second time?",
+    "constraints": [
+      "0 <= nums.length <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
+    ],
+    "examples": [
+      {
+        "input": "nums = [2, 5, 1, 2, 3, 5]",
+        "output": "2",
+        "explanation": "2's second appearance (index 3) comes before 5's (index 5)."
+      },
+      {
+        "input": "nums = [1, 2, 3, 4]",
+        "output": "-1"
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "first_repeated_value",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          2,
+          5,
+          1,
+          2,
+          3,
+          5
+        ]
+      ],
+      "expected": 2,
+      "kind": "example"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": -1,
+      "kind": "example"
+    },
+    {
+      "id": "t3",
+      "args": [
+        []
+      ],
+      "expected": -1,
+      "kind": "edge",
+      "note": "empty array"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          7,
+          7
+        ]
+      ],
+      "expected": 7,
+      "kind": "typical"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [
+          3,
+          1,
+          3,
+          1
+        ]
+      ],
+      "expected": 3,
+      "kind": "typical"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          5,
+          4,
+          3,
+          4,
+          5
+        ]
+      ],
+      "expected": 4,
+      "kind": "typical",
+      "note": "later first-appearance can still repeat first"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [
+          1
+        ]
+      ],
+      "expected": -1,
+      "kind": "edge",
+      "note": "single element"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          9,
+          8,
+          9,
+          8,
+          9
+        ]
+      ],
+      "expected": 9,
+      "kind": "typical"
+    },
+    {
+      "id": "t9",
+      "args": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "expected": 0,
+      "kind": "edge",
+      "note": "zeros"
+    }
+  ],
+  "starters": {
+    "python": "def first_repeated_value(nums):\n    \"\"\"Return the first value seen twice, or -1 if none repeats.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function firstRepeatedValue(nums) {\n  // Return the first value seen twice, or -1 if none repeats.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "You need to know, for the current value, whether it has appeared before. What structure answers that in O(1)?",
+    "Keep a set of everything seen so far; the first value already in the set when you reach it is the answer."
+  ],
+  "solution": {
+    "python": "def first_repeated_value(nums):\n    seen = set()\n    for value in nums:\n        if value in seen:\n            return value\n        seen.add(value)\n    return -1\n",
+    "javascript": "export function firstRepeatedValue(nums) {\n  const seen = new Set();\n  for (const value of nums) {\n    if (seen.has(value)) return value;\n    seen.add(value);\n  }\n  return -1;\n}\n"
+  },
+  "solutionExplanation": "Scan once, keeping a hash set of values already seen. The moment the current value is in the set, that's the earliest second appearance — return it. Falling off the loop means no repeats. Time O(n), space O(n)."
+}

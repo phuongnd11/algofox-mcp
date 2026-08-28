@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-05",
+  "slug": "crowd-favorite",
+  "title": "Crowd Favorite",
+  "topic": "arrays-hashing",
+  "difficulty": 2,
+  "estimatedMinutes": 10,
+  "tags": [
+    "hash-map",
+    "frequency-count"
+  ],
+  "statement": {
+    "markdown": "Given a non-empty integer array `nums`, return the value that occurs most often. If several values tie for the highest count, return the **smallest** of them.",
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
+    ],
+    "examples": [
+      {
+        "input": "nums = [1, 1, 2, 2, 3]",
+        "output": "1",
+        "explanation": "1 and 2 both occur twice; the smaller wins."
+      },
+      {
+        "input": "nums = [5, 5, 5, 2, 2]",
+        "output": "5"
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "crowd_favorite",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2,
+          3
+        ]
+      ],
+      "expected": 1,
+      "kind": "example",
+      "note": "tie broken by smaller value"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          5,
+          5,
+          5,
+          2,
+          2
+        ]
+      ],
+      "expected": 5,
+      "kind": "example"
+    },
+    {
+      "id": "t3",
+      "args": [
+        [
+          3
+        ]
+      ],
+      "expected": 3,
+      "kind": "edge",
+      "note": "single element"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      ],
+      "expected": 1,
+      "kind": "typical"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [
+          4,
+          4,
+          -1,
+          -1
+        ]
+      ],
+      "expected": -1,
+      "kind": "typical",
+      "note": "negative wins the tie"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          0,
+          0,
+          7,
+          7,
+          7,
+          0
+        ]
+      ],
+      "expected": 0,
+      "kind": "typical",
+      "note": "three-way count tie at 3"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [
+          10,
+          9,
+          10,
+          9,
+          9
+        ]
+      ],
+      "expected": 9,
+      "kind": "typical"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          1,
+          2,
+          3,
+          3
+        ]
+      ],
+      "expected": 3,
+      "kind": "typical"
+    }
+  ],
+  "starters": {
+    "python": "def crowd_favorite(nums):\n    \"\"\"Return the most frequent value; ties go to the smallest value.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function crowdFavorite(nums) {\n  // Return the most frequent value; ties go to the smallest value.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "Count occurrences first — one hash-map pass.",
+    "Then find the winner in a second pass over the MAP (not the array): higher count wins, and on equal counts the smaller value wins."
+  ],
+  "solution": {
+    "python": "def crowd_favorite(nums):\n    counts = {}\n    for value in nums:\n        counts[value] = counts.get(value, 0) + 1\n    best = max(counts.values())\n    return min(value for value, count in counts.items() if count == best)\n",
+    "javascript": "export function crowdFavorite(nums) {\n  const counts = new Map();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  let bestValue = null;\n  let bestCount = 0;\n  for (const [value, count] of counts) {\n    if (count > bestCount || (count === bestCount && value < bestValue)) {\n      bestValue = value;\n      bestCount = count;\n    }\n  }\n  return bestValue;\n}\n"
+  },
+  "solutionExplanation": "Two passes: build a value→count hash map, then scan the map keeping the best (count, then smaller value) pair. The tie-break is the interview trap — comparing only counts fails on inputs like [1,1,2,2,3]. Time O(n), space O(n)."
+}

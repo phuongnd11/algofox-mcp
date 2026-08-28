@@ -1,0 +1,26 @@
+{
+  "name": "@algofox/mcp",
+  "version": "0.1.0",
+  "description": "AlgoFox for your terminal coding agent — practice coding interviews fully offline. MCP server + CLI.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "bin": {
+    "algofox-mcp": "./dist/src/bin/server.js",
+    "algofox": "./dist/src/bin/cli.js"
+  },
+  "files": ["dist/src", "content", "README.md", "AGENTS.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test 'dist/test/*.test.js'",
+    "lint:offline": "node scripts/check-offline.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

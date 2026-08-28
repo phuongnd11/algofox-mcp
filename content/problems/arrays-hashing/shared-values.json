@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-04",
+  "slug": "shared-values",
+  "title": "Shared Values",
+  "topic": "arrays-hashing",
+  "difficulty": 2,
+  "estimatedMinutes": 10,
+  "tags": [
+    "hash-set",
+    "intersection"
+  ],
+  "statement": {
+    "markdown": "Given two integer arrays `a` and `b`, return a **sorted** array of the distinct values that appear in **both**.\n\nEach shared value should appear exactly once in the result, regardless of how many times it occurs in the inputs.",
+    "constraints": [
+      "0 <= a.length, b.length <= 10^4",
+      "-10^9 <= values <= 10^9"
+    ],
+    "examples": [
+      {
+        "input": "a = [4, 9, 5], b = [9, 4, 9, 8, 4]",
+        "output": "[4, 9]"
+      },
+      {
+        "input": "a = [1, 2, 2, 1], b = [2, 2]",
+        "output": "[2]"
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "shared_values",
+    "params": [
+      {
+        "name": "a",
+        "type": "int[]"
+      },
+      {
+        "name": "b",
+        "type": "int[]"
+      }
+    ],
+    "returns": "int[]"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          4,
+          9,
+          5
+        ],
+        [
+          9,
+          4,
+          9,
+          8,
+          4
+        ]
+      ],
+      "expected": [
+        4,
+        9
+      ],
+      "kind": "example"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "expected": [
+        2
+      ],
+      "kind": "example"
+    },
+    {
+      "id": "t3",
+      "args": [
+        [],
+        [
+          1,
+          2
+        ]
+      ],
+      "expected": [],
+      "kind": "edge",
+      "note": "one side empty"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "expected": [],
+      "kind": "typical",
+      "note": "no overlap"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [
+          5,
+          5,
+          5
+        ],
+        [
+          5
+        ]
+      ],
+      "expected": [
+        5
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          3,
+          1,
+          2
+        ],
+        [
+          2,
+          3,
+          4
+        ]
+      ],
+      "expected": [
+        2,
+        3
+      ],
+      "kind": "typical"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [
+          -1,
+          0,
+          -1
+        ],
+        [
+          0,
+          -1
+        ]
+      ],
+      "expected": [
+        -1,
+        0
+      ],
+      "kind": "typical",
+      "note": "negatives sort before zero"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          7
+        ],
+        [
+          7
+        ]
+      ],
+      "expected": [
+        7
+      ],
+      "kind": "edge",
+      "note": "single shared element"
+    }
+  ],
+  "starters": {
+    "python": "def shared_values(a, b):\n    \"\"\"Return the sorted distinct values present in both arrays.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function sharedValues(a, b) {\n  // Return the sorted distinct values present in both arrays.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "Membership tests are the whole problem. Which structure makes 'is this value in a?' O(1)?",
+    "Build a set from one array, filter the other array's distinct values through it, then sort the result."
+  ],
+  "solution": {
+    "python": "def shared_values(a, b):\n    return sorted(set(a) & set(b))\n",
+    "javascript": "export function sharedValues(a, b) {\n  const setA = new Set(a);\n  const shared = [...new Set(b)].filter((v) => setA.has(v));\n  return shared.sort((x, y) => x - y);\n}\n"
+  },
+  "solutionExplanation": "Convert both arrays to sets and intersect: set membership is O(1), so the intersection is O(n + m), and the final sort is on the (usually much smaller) shared set. Watch the JS pitfall: Array.prototype.sort() compares as strings by default — pass a numeric comparator."
+}

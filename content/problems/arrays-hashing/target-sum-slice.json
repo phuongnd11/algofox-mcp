@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "id": "cp-ah-10",
+  "slug": "target-sum-slice",
+  "title": "Target-Sum Slice",
+  "topic": "arrays-hashing",
+  "difficulty": 3,
+  "estimatedMinutes": 18,
+  "tags": [
+    "prefix-sum",
+    "hash-set"
+  ],
+  "statement": {
+    "markdown": "Given an integer array `nums` (values may be negative) and an integer `k`, decide whether any **non-empty contiguous** slice of the array sums exactly to `k`. Return `true` or `false`.\n\nNegatives break the classic two-pointer shrink — you'll want prefix sums.",
+    "constraints": [
+      "0 <= nums.length <= 10^5",
+      "-10^4 <= nums[i] <= 10^4",
+      "-10^9 <= k <= 10^9"
+    ],
+    "examples": [
+      {
+        "input": "nums = [3, 4, -7, 5], k = 0",
+        "output": "true",
+        "explanation": "3 + 4 + (−7) = 0."
+      },
+      {
+        "input": "nums = [1, 2, 3], k = 7",
+        "output": "false"
+      }
+    ]
+  },
+  "signature": {
+    "functionName": "target_sum_slice",
+    "params": [
+      {
+        "name": "nums",
+        "type": "int[]"
+      },
+      {
+        "name": "k",
+        "type": "int"
+      }
+    ],
+    "returns": "bool"
+  },
+  "comparison": {
+    "mode": "exact"
+  },
+  "tests": [
+    {
+      "id": "t1",
+      "args": [
+        [
+          3,
+          4,
+          -7,
+          5
+        ],
+        0
+      ],
+      "expected": true,
+      "kind": "example"
+    },
+    {
+      "id": "t2",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        7
+      ],
+      "expected": false,
+      "kind": "example"
+    },
+    {
+      "id": "t3",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        5
+      ],
+      "expected": true,
+      "kind": "typical"
+    },
+    {
+      "id": "t4",
+      "args": [
+        [
+          1,
+          -1,
+          3
+        ],
+        0
+      ],
+      "expected": true,
+      "kind": "typical",
+      "note": "cancelling pair"
+    },
+    {
+      "id": "t5",
+      "args": [
+        [
+          2
+        ],
+        2
+      ],
+      "expected": true,
+      "kind": "edge",
+      "note": "single element hit"
+    },
+    {
+      "id": "t6",
+      "args": [
+        [
+          2
+        ],
+        3
+      ],
+      "expected": false,
+      "kind": "edge",
+      "note": "single element miss"
+    },
+    {
+      "id": "t7",
+      "args": [
+        [],
+        0
+      ],
+      "expected": false,
+      "kind": "edge",
+      "note": "empty array has no non-empty slice"
+    },
+    {
+      "id": "t8",
+      "args": [
+        [
+          1,
+          2,
+          3
+        ],
+        6
+      ],
+      "expected": true,
+      "kind": "typical",
+      "note": "whole array"
+    },
+    {
+      "id": "t9",
+      "args": [
+        [
+          -1,
+          -2,
+          -3
+        ],
+        -6
+      ],
+      "expected": true,
+      "kind": "typical",
+      "note": "all negative"
+    },
+    {
+      "id": "t10",
+      "args": [
+        [
+          0
+        ],
+        0
+      ],
+      "expected": true,
+      "kind": "edge",
+      "note": "zero-valued element"
+    }
+  ],
+  "starters": {
+    "python": "def target_sum_slice(nums, k):\n    \"\"\"Return True if some non-empty contiguous slice sums to k.\"\"\"\n    # TODO: implement\n    pass\n",
+    "javascript": "export function targetSumSlice(nums, k) {\n  // Return true if some non-empty contiguous slice sums to k.\n  // TODO: implement\n}\n"
+  },
+  "hints": [
+    "Let P(i) be the sum of the first i elements. A slice (i..j] sums to P(j) − P(i). What are you searching for?",
+    "Scanning with running sum s = P(j), you need some earlier prefix equal to s − k. Keep prefixes in a set.",
+    "Seed the set with 0 (the empty prefix) so slices starting at index 0 are found — and check BEFORE inserting s."
+  ],
+  "solution": {
+    "python": "def target_sum_slice(nums, k):\n    seen = {0}\n    total = 0\n    for value in nums:\n        total += value\n        if total - k in seen:\n            return True\n        seen.add(total)\n    return False\n",
+    "javascript": "export function targetSumSlice(nums, k) {\n  const seen = new Set([0]);\n  let total = 0;\n  for (const value of nums) {\n    total += value;\n    if (seen.has(total - k)) return true;\n    seen.add(total);\n  }\n  return false;\n}\n"
+  },
+  "solutionExplanation": "Prefix sums turn 'slice sums to k' into 'two prefixes differ by k'. Keep every prefix seen so far in a set; at each step check whether current − k was already a prefix. Seeding with 0 covers slices that start at the beginning, and checking before inserting keeps the slice non-empty. Time O(n), space O(n)."
+}
