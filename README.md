@@ -16,10 +16,10 @@ Close your terminal any time. Come back in any supported agent, say "Continue Al
 
 ### Claude Code (recommended: the plugin)
 
-The [algofox-skill](https://github.com/algofox/algofox-skill) plugin bundles this server plus an interview-coach skill and `/algofox` commands:
+The [algofox-skill](https://github.com/phuongnd11/algofox-skill) plugin bundles this server plus an interview-coach skill and `/algofox` commands:
 
 ```
-/plugin marketplace add algofox/algofox-skill
+/plugin marketplace add phuongnd11/algofox-skill
 ```
 
 Or add just the server:
