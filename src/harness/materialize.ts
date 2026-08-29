@@ -89,6 +89,10 @@ export function materializeProblem(problem: CodingProblem, language: Language, b
   };
 
   const runnerFile = language === "python" ? "run_tests.py" : "run_tests.mjs";
+  if (language === "javascript") {
+    // Node < 22 has no module detection: without this, `export` in solution.js is a syntax error
+    writeFileSync(join(dir, "package.json"), JSON.stringify({ type: "module" }, null, 2) + "\n", "utf8");
+  }
   writeFileSync(join(dir, "PROBLEM.md"), problemMarkdown(problem, solutionFile, runCommand), "utf8");
   writeFileSync(join(dir, solutionFile), starter.trimStart(), "utf8");
   writeFileSync(join(dir, "tests.json"), JSON.stringify(testsSpec, null, 2) + "\n", "utf8");
@@ -100,5 +104,5 @@ export function materializeProblem(problem: CodingProblem, language: Language, b
   );
 
   updateProblemProgress(problem.slug, { salt, language, materializedDir: dir });
-  return { dir, solutionFile: join(dir, solutionFile), runCommand, files: ["PROBLEM.md", solutionFile, "tests.json", runnerFile, ".algofox-meta.json"] };
+  return { dir, solutionFile: join(dir, solutionFile), runCommand, files: ["PROBLEM.md", solutionFile, "tests.json", runnerFile, ".algofox-meta.json", ...(language === "javascript" ? ["package.json"] : [])] };
 }
