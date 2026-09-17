@@ -10,12 +10,14 @@ process.env.ALGOFOX_HOME = mkdtempSync(join(tmpdir(), "algofox-state-"));
 
 const { loadProblems } = await import("../src/content/loader.js");
 const { materializeProblem } = await import("../src/harness/materialize.js");
-const { submitProblemResult, startProblem, getHint, revealSolution, getStatus } = await import("../src/tools/problems.js");
+const { submitProblemResult, startProblem, getHint, revealSolution, getStatus, setPreferences } = await import("../src/tools/problems.js");
 const { getProblemProgress } = await import("../src/state/store.js");
 
+// typescript reuses the javascript reference solutions (valid TS) under Node type stripping
 const LANGS = [
-  { language: "python" as const, cmd: ["python3", "run_tests.py"], solutionFile: "solution.py" },
-  { language: "javascript" as const, cmd: ["node", "run_tests.mjs"], solutionFile: "solution.js" },
+  { language: "python" as const, solutionLang: "python" as const, cmd: ["python3", "run_tests.py"], solutionFile: "solution.py" },
+  { language: "javascript" as const, solutionLang: "javascript" as const, cmd: ["node", "run_tests.mjs"], solutionFile: "solution.js" },
+  { language: "typescript" as const, solutionLang: "javascript" as const, cmd: ["node", "--experimental-strip-types", "run_tests.ts"], solutionFile: "solution.ts" },
 ];
 
 function runInDir(dir: string, cmd: string[]): string {
@@ -33,11 +35,11 @@ before(() => {
 });
 
 for (const problem of loadProblems().values()) {
-  for (const { language, cmd, solutionFile } of LANGS) {
+  for (const { language, solutionLang, cmd, solutionFile } of LANGS) {
     test(`golden: ${problem.slug} reference solution passes (${language})`, () => {
       const base = mkdtempSync(join(tmpdir(), "algofox-golden-"));
       const mat = materializeProblem(problem, language, base);
-      writeFileSync(join(mat.dir, solutionFile), problem.solution[language]!, "utf8");
+      writeFileSync(join(mat.dir, solutionFile), problem.solution[solutionLang]!, "utf8");
       const parsed = JSON.parse(resultLine(runInDir(mat.dir, cmd)).replace("ALGOFOX_RESULT ", ""));
       assert.equal(parsed.failed, 0, `${problem.slug}/${language} failures: ${JSON.stringify(parsed.failures)}`);
       const reply = submitProblemResult({ slug: problem.slug, resultLine: resultLine(runInDir(mat.dir, cmd)) });
@@ -86,7 +88,12 @@ test("reveal_solution is gated until 2 hints", () => {
   assert.equal(getProblemProgress(problem.slug).hintsUsed, 2);
 });
 
-test("status card renders", () => {
+test("first run asks for a language, then status card renders", () => {
+  process.env.ALGOFOX_HOME = mkdtempSync(join(tmpdir(), "algofox-state3-"));
+  const setup = getStatus();
+  assert.equal(setup.data.needsSetup, true);
+  assert.match(setup.text, /pick your language/i);
+  setPreferences({ language: "python" });
   const status = getStatus();
   assert.match(status.text, /AlgoFox/);
   assert.ok(typeof status.data.solved === "number");

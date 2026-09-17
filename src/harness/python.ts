@@ -104,7 +104,11 @@ def main():
         sys.exit(1)
     fn = getattr(solution, spec["functionName"], None)
     if fn is None:
-        print(f"solution.py must define {spec['functionName']}()")
+        cls = getattr(solution, "Solution", None)
+        if cls is not None:
+            fn = getattr(cls(), spec["functionName"], None)
+    if fn is None:
+        print(f"solution.py must define {spec['functionName']}() or Solution.{spec['functionName']}()")
         sys.exit(1)
 
     results, failures = [], []

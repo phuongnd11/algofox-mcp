@@ -61,8 +61,8 @@ npx -p @algofoxdotapp/mcp algofox resume     # ready-to-paste agent prompt
 
 ## What's inside
 
-- **10 original coding problems** (arrays & hashing to start — more topics coming) with typed test cases, tiered hints, and reference solutions in Python and JavaScript.
-- Set your language any time: just tell your agent, or `set_preferences`.
+- **10 original coding problems** (arrays & hashing to start — more topics coming) with typed test cases, tiered hints, and reference solutions.
+- **5 languages: Python, JavaScript, TypeScript, Java, Go.** You pick on first run; switch any time by telling your agent. LeetCode-style `Solution` boilerplate, sample input/output, and a test harness are generated from each problem's typed signature.
 - Solutions are **earned**: `reveal_solution` unlocks after 2 failed runs or 2 hints. All content is local, so you *can* peek at the answer keys — but you'd only be cheating yourself.
 - A run token ties submitted results to an actual test run, so your agent can't hand-wave a pass.
 
@@ -70,7 +70,7 @@ Want a full curriculum — guided lessons, spaced review, quick-play drills, com
 
 ## Requirements
 
-Node ≥ 18. Python problems need `python3` on your PATH.
+Node ≥ 18. Per language: Python needs `python3`; TypeScript needs Node ≥ 22.6; Java needs a JDK (`javac`); Go needs the Go toolchain. JavaScript needs nothing extra.
 
 ## License
 

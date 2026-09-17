@@ -11,7 +11,7 @@
     "arithmetic-series"
   ],
   "statement": {
-    "markdown": "`nums` contains `n` **distinct** integers drawn from the range `0..n` (inclusive) — so exactly one number from that range is absent. Return it.\n\nThere's a well-known O(1)-space trick. Can you find it?",
+    "markdown": "`nums` contains `n` **distinct** integers drawn from the range `0..n` (inclusive) \u2014 so exactly one number from that range is absent. Return it.\n\nThere's a well-known O(1)-space trick. Can you find it?",
     "constraints": [
       "1 <= n <= 10^5",
       "All values are distinct and within 0..n"
@@ -142,17 +142,13 @@
       "kind": "typical"
     }
   ],
-  "starters": {
-    "python": "def missing_number(nums):\n    \"\"\"nums holds n distinct values from 0..n. Return the absent one.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function missingNumber(nums) {\n  // nums holds n distinct values from 0..n. Return the absent one.\n  // TODO: implement\n}\n"
-  },
   "hints": [
     "If nothing were missing, what would the sum of 0..n be?",
-    "Sum of 0..n is n·(n+1)/2. Subtract the actual sum — the difference is the missing number."
+    "Sum of 0..n is n\u00b7(n+1)/2. Subtract the actual sum \u2014 the difference is the missing number."
   ],
   "solution": {
     "python": "def missing_number(nums):\n    n = len(nums)\n    return n * (n + 1) // 2 - sum(nums)\n",
     "javascript": "export function missingNumber(nums) {\n  const n = nums.length;\n  return (n * (n + 1)) / 2 - nums.reduce((a, b) => a + b, 0);\n}\n"
   },
-  "solutionExplanation": "The full range 0..n sums to n·(n+1)/2. Since exactly one value is missing, the difference between that ideal sum and the actual sum is the answer. Time O(n), space O(1). (XOR-ing indices against values works too.)"
+  "solutionExplanation": "The full range 0..n sums to n\u00b7(n+1)/2. Since exactly one value is missing, the difference between that ideal sum and the actual sum is the answer. Time O(n), space O(1). (XOR-ing indices against values works too.)"
 }

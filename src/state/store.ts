@@ -33,11 +33,12 @@ function writeJsonAtomic(path: string, value: unknown): void {
 
 export interface Config {
   stateVersion: 1;
-  language: "python" | "javascript";
+  /** unset until the user picks one (first-run setup) */
+  language?: "python" | "javascript" | "typescript" | "java" | "go";
   displayName?: string;
 }
 
-const DEFAULT_CONFIG: Config = { stateVersion: 1, language: "python" };
+const DEFAULT_CONFIG: Config = { stateVersion: 1 };
 
 export function getConfig(): Config {
   return { ...DEFAULT_CONFIG, ...readJson<Partial<Config>>(join(stateRoot(), "config.json"), {}) };

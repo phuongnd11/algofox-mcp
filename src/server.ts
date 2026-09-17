@@ -6,7 +6,7 @@ import {
   getHint, getHintInput, revealSolution, revealSolutionInput, type ToolReply,
 } from "./tools/problems.js";
 
-const VERSION = "0.1.0";
+const VERSION = "0.2.0";
 
 function reply(r: ToolReply) {
   return { content: [{ type: "text" as const, text: `${r.text}\n\n[coach] ${r.data.coachNote}\n[next] ${r.data.nextAction}` }] };
@@ -22,7 +22,7 @@ export function buildServer(): McpServer {
   );
   server.registerTool(
     "set_preferences",
-    { description: "Set AlgoFox preferences (language: python | javascript). Optional — defaults apply without it.", inputSchema: setPreferencesInput.shape },
+    { description: "Set AlgoFox preferences. language: python | javascript | typescript | java | go. Required once on first run (get_status will say so); changeable any time.", inputSchema: setPreferencesInput.shape },
     async (input) => reply(setPreferences(input)),
   );
   server.registerTool(

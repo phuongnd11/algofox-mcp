@@ -11,7 +11,7 @@
     "hash-set"
   ],
   "statement": {
-    "markdown": "Given an integer array `nums` (values may be negative) and an integer `k`, decide whether any **non-empty contiguous** slice of the array sums exactly to `k`. Return `true` or `false`.\n\nNegatives break the classic two-pointer shrink — you'll want prefix sums.",
+    "markdown": "Given an integer array `nums` (values may be negative) and an integer `k`, decide whether any **non-empty contiguous** slice of the array sums exactly to `k`. Return `true` or `false`.\n\nNegatives break the classic two-pointer shrink \u2014 you'll want prefix sums.",
     "constraints": [
       "0 <= nums.length <= 10^5",
       "-10^4 <= nums[i] <= 10^4",
@@ -21,7 +21,7 @@
       {
         "input": "nums = [3, 4, -7, 5], k = 0",
         "output": "true",
-        "explanation": "3 + 4 + (−7) = 0."
+        "explanation": "3 + 4 + (\u22127) = 0."
       },
       {
         "input": "nums = [1, 2, 3], k = 7",
@@ -176,18 +176,14 @@
       "note": "zero-valued element"
     }
   ],
-  "starters": {
-    "python": "def target_sum_slice(nums, k):\n    \"\"\"Return True if some non-empty contiguous slice sums to k.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function targetSumSlice(nums, k) {\n  // Return true if some non-empty contiguous slice sums to k.\n  // TODO: implement\n}\n"
-  },
   "hints": [
-    "Let P(i) be the sum of the first i elements. A slice (i..j] sums to P(j) − P(i). What are you searching for?",
-    "Scanning with running sum s = P(j), you need some earlier prefix equal to s − k. Keep prefixes in a set.",
-    "Seed the set with 0 (the empty prefix) so slices starting at index 0 are found — and check BEFORE inserting s."
+    "Let P(i) be the sum of the first i elements. A slice (i..j] sums to P(j) \u2212 P(i). What are you searching for?",
+    "Scanning with running sum s = P(j), you need some earlier prefix equal to s \u2212 k. Keep prefixes in a set.",
+    "Seed the set with 0 (the empty prefix) so slices starting at index 0 are found \u2014 and check BEFORE inserting s."
   ],
   "solution": {
     "python": "def target_sum_slice(nums, k):\n    seen = {0}\n    total = 0\n    for value in nums:\n        total += value\n        if total - k in seen:\n            return True\n        seen.add(total)\n    return False\n",
     "javascript": "export function targetSumSlice(nums, k) {\n  const seen = new Set([0]);\n  let total = 0;\n  for (const value of nums) {\n    total += value;\n    if (seen.has(total - k)) return true;\n    seen.add(total);\n  }\n  return false;\n}\n"
   },
-  "solutionExplanation": "Prefix sums turn 'slice sums to k' into 'two prefixes differ by k'. Keep every prefix seen so far in a set; at each step check whether current − k was already a prefix. Seeding with 0 covers slices that start at the beginning, and checking before inserting keeps the slice non-empty. Time O(n), space O(n)."
+  "solutionExplanation": "Prefix sums turn 'slice sums to k' into 'two prefixes differ by k'. Keep every prefix seen so far in a set; at each step check whether current \u2212 k was already a prefix. Seeding with 0 covers slices that start at the beginning, and checking before inserting keeps the slice non-empty. Time O(n), space O(n)."
 }

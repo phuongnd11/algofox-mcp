@@ -154,17 +154,13 @@
       "kind": "typical"
     }
   ],
-  "starters": {
-    "python": "def crowd_favorite(nums):\n    \"\"\"Return the most frequent value; ties go to the smallest value.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function crowdFavorite(nums) {\n  // Return the most frequent value; ties go to the smallest value.\n  // TODO: implement\n}\n"
-  },
   "hints": [
-    "Count occurrences first — one hash-map pass.",
+    "Count occurrences first \u2014 one hash-map pass.",
     "Then find the winner in a second pass over the MAP (not the array): higher count wins, and on equal counts the smaller value wins."
   ],
   "solution": {
     "python": "def crowd_favorite(nums):\n    counts = {}\n    for value in nums:\n        counts[value] = counts.get(value, 0) + 1\n    best = max(counts.values())\n    return min(value for value, count in counts.items() if count == best)\n",
     "javascript": "export function crowdFavorite(nums) {\n  const counts = new Map();\n  for (const value of nums) counts.set(value, (counts.get(value) ?? 0) + 1);\n  let bestValue = null;\n  let bestCount = 0;\n  for (const [value, count] of counts) {\n    if (count > bestCount || (count === bestCount && value < bestValue)) {\n      bestValue = value;\n      bestCount = count;\n    }\n  }\n  return bestValue;\n}\n"
   },
-  "solutionExplanation": "Two passes: build a value→count hash map, then scan the map keeping the best (count, then smaller value) pair. The tie-break is the interview trap — comparing only counts fails on inputs like [1,1,2,2,3]. Time O(n), space O(n)."
+  "solutionExplanation": "Two passes: build a value\u2192count hash map, then scan the map keeping the best (count, then smaller value) pair. The tie-break is the interview trap \u2014 comparing only counts fails on inputs like [1,1,2,2,3]. Time O(n), space O(n)."
 }

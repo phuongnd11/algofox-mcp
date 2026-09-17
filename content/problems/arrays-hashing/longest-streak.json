@@ -11,7 +11,7 @@
     "sequence"
   ],
   "statement": {
-    "markdown": "Given an unsorted integer array `nums`, return the length of the longest run of **consecutive integer values** present in it (order and duplicates in the array don't matter).\n\nSorting gives O(n log n). The interview follow-up is to do it in O(n) — think about which numbers can *start* a streak.",
+    "markdown": "Given an unsorted integer array `nums`, return the length of the longest run of **consecutive integer values** present in it (order and duplicates in the array don't matter).\n\nSorting gives O(n log n). The interview follow-up is to do it in O(n) \u2014 think about which numbers can *start* a streak.",
     "constraints": [
       "0 <= nums.length <= 10^5",
       "-10^9 <= nums[i] <= 10^9"
@@ -163,18 +163,14 @@
       "kind": "typical"
     }
   ],
-  "starters": {
-    "python": "def longest_streak(nums):\n    \"\"\"Return the length of the longest run of consecutive values.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function longestStreak(nums) {\n  // Return the length of the longest run of consecutive values.\n  // TODO: implement\n}\n"
-  },
   "hints": [
-    "Put everything in a set. Now membership is O(1) — what would you look up?",
-    "A value v starts a streak only if v−1 is NOT in the set. Only count upward from those starters.",
-    "Every value is visited at most twice (once in the scan, once inside a streak walk) — that's the O(n) argument."
+    "Put everything in a set. Now membership is O(1) \u2014 what would you look up?",
+    "A value v starts a streak only if v\u22121 is NOT in the set. Only count upward from those starters.",
+    "Every value is visited at most twice (once in the scan, once inside a streak walk) \u2014 that's the O(n) argument."
   ],
   "solution": {
     "python": "def longest_streak(nums):\n    values = set(nums)\n    best = 0\n    for v in values:\n        if v - 1 in values:\n            continue\n        length = 1\n        while v + length in values:\n            length += 1\n        best = max(best, length)\n    return best\n",
     "javascript": "export function longestStreak(nums) {\n  const values = new Set(nums);\n  let best = 0;\n  for (const v of values) {\n    if (values.has(v - 1)) continue;\n    let length = 1;\n    while (values.has(v + length)) length++;\n    best = Math.max(best, length);\n  }\n  return best;\n}\n"
   },
-  "solutionExplanation": "Load the values into a set, then only walk streaks from their left endpoints — values v where v−1 is absent. Each streak is walked exactly once, so despite the nested-looking loop the total work is O(n). The 'only start at starters' insight is the whole problem."
+  "solutionExplanation": "Load the values into a set, then only walk streaks from their left endpoints \u2014 values v where v\u22121 is absent. Each streak is walked exactly once, so despite the nested-looking loop the total work is O(n). The 'only start at starters' insight is the whole problem."
 }

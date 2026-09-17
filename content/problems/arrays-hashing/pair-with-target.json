@@ -11,7 +11,7 @@
     "two-sum-pattern"
   ],
   "statement": {
-    "markdown": "You're given an array of integers `nums` and an integer `target`.\n\nExactly one pair of elements at **distinct indices** adds up to `target`. Return those two indices as a list `[i, j]` (any order).\n\nAim for a single pass — can you check for each number whether its partner has already appeared?",
+    "markdown": "You're given an array of integers `nums` and an integer `target`.\n\nExactly one pair of elements at **distinct indices** adds up to `target`. Return those two indices as a list `[i, j]` (any order).\n\nAim for a single pass \u2014 can you check for each number whether its partner has already appeared?",
     "constraints": [
       "2 <= nums.length <= 10^4",
       "-10^9 <= nums[i], target <= 10^9",
@@ -200,18 +200,14 @@
       "kind": "typical"
     }
   ],
-  "starters": {
-    "python": "def pair_with_target(nums, target):\n    \"\"\"Return [i, j] — indices of the one pair summing to target.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function pairWithTarget(nums, target) {\n  // Return [i, j] — indices of the one pair summing to target.\n  // TODO: implement\n}\n"
-  },
   "hints": [
-    "Brute force checks every pair — O(n²). What single question, asked once per element, would avoid that?",
+    "Brute force checks every pair \u2014 O(n\u00b2). What single question, asked once per element, would avoid that?",
     "As you scan, remember each value's index in a hash map. For the current value v, its partner is target - v.",
-    "Check for the partner BEFORE inserting the current value — that guarantees distinct indices and one pass."
+    "Check for the partner BEFORE inserting the current value \u2014 that guarantees distinct indices and one pass."
   ],
   "solution": {
     "python": "def pair_with_target(nums, target):\n    seen = {}\n    for j, value in enumerate(nums):\n        if target - value in seen:\n            return [seen[target - value], j]\n        seen[value] = j\n    return []\n",
     "javascript": "export function pairWithTarget(nums, target) {\n  const seen = new Map();\n  for (let j = 0; j < nums.length; j++) {\n    const partner = target - nums[j];\n    if (seen.has(partner)) return [seen.get(partner), j];\n    seen.set(nums[j], j);\n  }\n  return [];\n}\n"
   },
-  "solutionExplanation": "One pass with a hash map from value → index. For each element v at index j, its needed partner is target − v; if that partner was already seen, the answer is [seen[partner], j]. Checking before inserting guarantees the two indices are distinct. Time O(n), space O(n)."
+  "solutionExplanation": "One pass with a hash map from value \u2192 index. For each element v at index j, its needed partner is target \u2212 v; if that partner was already seen, the answer is [seen[partner], j]. Checking before inserting guarantees the two indices are distinct. Time O(n), space O(n)."
 }

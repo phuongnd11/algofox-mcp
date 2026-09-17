@@ -34,7 +34,7 @@ export const testCase = z.object({
 });
 export type TestCase = z.infer<typeof testCase>;
 
-export const LANGUAGES = ["python", "javascript"] as const;
+export const LANGUAGES = ["python", "javascript", "typescript", "java", "go"] as const;
 export const languageSchema = z.enum(LANGUAGES);
 export type Language = z.infer<typeof languageSchema>;
 
@@ -73,7 +73,7 @@ export const codingProblem = z.object({
   }),
   comparison: comparisonSpec,
   tests: z.array(testCase).min(8),
-  starters: z.record(languageSchema, z.string()),
+  starters: z.record(languageSchema, z.string()).default({}),  // authored overrides; generated from signature otherwise
   hints: z.array(z.string()).min(2).max(4),
   solution: z.record(languageSchema, z.string()),
   solutionExplanation: z.string().min(1),

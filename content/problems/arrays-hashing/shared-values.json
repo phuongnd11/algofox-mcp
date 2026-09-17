@@ -190,10 +190,6 @@
       "note": "single shared element"
     }
   ],
-  "starters": {
-    "python": "def shared_values(a, b):\n    \"\"\"Return the sorted distinct values present in both arrays.\"\"\"\n    # TODO: implement\n    pass\n",
-    "javascript": "export function sharedValues(a, b) {\n  // Return the sorted distinct values present in both arrays.\n  // TODO: implement\n}\n"
-  },
   "hints": [
     "Membership tests are the whole problem. Which structure makes 'is this value in a?' O(1)?",
     "Build a set from one array, filter the other array's distinct values through it, then sort the result."
@@ -202,5 +198,5 @@
     "python": "def shared_values(a, b):\n    return sorted(set(a) & set(b))\n",
     "javascript": "export function sharedValues(a, b) {\n  const setA = new Set(a);\n  const shared = [...new Set(b)].filter((v) => setA.has(v));\n  return shared.sort((x, y) => x - y);\n}\n"
   },
-  "solutionExplanation": "Convert both arrays to sets and intersect: set membership is O(1), so the intersection is O(n + m), and the final sort is on the (usually much smaller) shared set. Watch the JS pitfall: Array.prototype.sort() compares as strings by default — pass a numeric comparator."
+  "solutionExplanation": "Convert both arrays to sets and intersect: set membership is O(1), so the intersection is O(n + m), and the final sort is on the (usually much smaller) shared set. Watch the JS pitfall: Array.prototype.sort() compares as strings by default \u2014 pass a numeric comparator."
 }

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getProblem, loadProblems, listTopics } from "../content/loader.js";
-import { languageSchema, type CodingProblem, type Language } from "../content/problemSchema.js";
-import { materializeProblem } from "../harness/materialize.js";
+import { LANGUAGES, languageSchema, type CodingProblem, type Language } from "../content/problemSchema.js";
+import { materializeProblem, renderStatement } from "../harness/materialize.js";
 import { computeToken, type RunResults } from "../harness/token.js";
 import {
   appendActivity, currentStreak, getConfig, getProblemProgress, getProgressFile,
@@ -38,6 +38,20 @@ export function suggestNextProblem(): CodingProblem | undefined {
 
 export function getStatus(): ToolReply {
   const config = getConfig();
+  if (!config.language) {
+    return coach(
+      [
+        "Welcome to AlgoFox — coding interview practice, fully offline.",
+        "",
+        `First, pick your language: ${LANGUAGES.join(" · ")}`,
+        "",
+        "You can switch any time by asking.",
+      ].join("\n"),
+      { needsSetup: true, languages: [...LANGUAGES] },
+      "First run: ask the user which language they want, then call set_preferences with it. Do not start a problem before that.",
+      "Call set_preferences with the chosen language, then get_status again.",
+    );
+  }
   const progress = getProgressFile();
   const solved = Object.values(progress.problems).filter((p) => p.solved).length;
   const total = loadProblems().size;
@@ -120,7 +134,16 @@ export const startProblemInput = z.object({
 export function startProblem(input: z.infer<typeof startProblemInput>): ToolReply {
   const problem = getProblem(input.slug);
   if (!problem) return coach(`Unknown problem: ${input.slug}`, { error: "not_found" }, "Tell the user and show the list.", "Call list_problems.");
-  const language: Language = input.language ?? getConfig().language;
+  const configured = getConfig().language;
+  if (!input.language && !configured) {
+    return coach(
+      `Pick a language first: ${LANGUAGES.join(" · ")}`,
+      { needsSetup: true, languages: [...LANGUAGES] },
+      "Ask the user which language they want, call set_preferences, then retry start_problem.",
+      "Call set_preferences with the chosen language.",
+    );
+  }
+  const language: Language = input.language ?? configured!;
   const result = materializeProblem(problem, language, input.dir ?? process.cwd());
   const text = [
     `Materialized ${problem.title} → ${result.dir}`,
@@ -130,8 +153,8 @@ export function startProblem(input: z.infer<typeof startProblemInput>): ToolRepl
     "",
     "--- PROBLEM.md ---",
     "",
-    // statement is delivered; hints and solution are NOT — they stay behind get_hint / reveal_solution
-    problem.statement.markdown.trim(),
+    // statement + examples are delivered; hints and solution are NOT — they stay behind get_hint / reveal_solution
+    renderStatement(problem).trim(),
   ].join("\n");
   return coach(
     text,
@@ -255,12 +278,15 @@ export function revealSolution(input: z.infer<typeof revealSolutionInput>): Tool
       "Offer get_hint.",
     );
   }
-  const language = (prior.language as "python" | "javascript" | undefined) ?? getConfig().language;
-  const code = problem.solution[language] ?? Object.values(problem.solution)[0] ?? "";
+  const preferred = (prior.language as Language | undefined) ?? getConfig().language ?? "python";
+  const available = Object.keys(problem.solution) as Language[];
+  const language = problem.solution[preferred] ? preferred : available[0];
+  const code = problem.solution[language] ?? "";
+  const langNote = language === preferred ? "" : `\n\n(Reference solution is in ${language}; ${preferred} version coming.)`;
   updateProblemProgress(input.slug, { revealed: true });
   appendActivity({ type: "reveal", slug: input.slug });
   return coach(
-    [`Solution — ${problem.title}`, "", "```" + language, code.trim(), "```", "", problem.solutionExplanation.trim()].join("\n"),
+    [`Solution — ${problem.title}`, "", "```" + language, code.trim(), "```", "", problem.solutionExplanation.trim() + langNote].join("\n"),
     { solution: code, explanation: problem.solutionExplanation, language },
     "Walk through the solution as a teacher; connect it to the user's own attempt.",
     "Suggest re-implementing it from memory, or the next problem.",

@@ -14,6 +14,10 @@ jobs:
         with: { node-version: "${{ matrix.node }}" }
       - uses: actions/setup-python@v5
         with: { python-version: "3.x" }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: actions/setup-go@v5
+        with: { go-version: stable }
       - uses: pnpm/action-setup@v4
         with: { version: 9 }
       - run: pnpm install
