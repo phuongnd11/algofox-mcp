@@ -43,7 +43,7 @@ claude mcp add algofox -- npx -y @algofox/mcp
 ```toml
 [mcp_servers.algofox]
 command = "npx"
-args = ["-y", "algofox-mcp"]
+args = ["-y", "@algofox/mcp"]
 ```
 
 For clients without skills, copy the coach block from [AGENTS.md](AGENTS.md) into your project's `AGENTS.md` / rules file so the agent behaves like an interviewer instead of solving problems for you.
