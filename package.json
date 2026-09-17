@@ -1,5 +1,5 @@
 {
-  "name": "algofox-mcp",
+  "name": "@algofox/mcp",
   "version": "0.1.0",
   "description": "AlgoFox for your terminal coding agent \u2014 practice coding interviews fully offline. MCP server + CLI.",
   "license": "MIT",
@@ -39,5 +39,8 @@
   "homepage": "https://github.com/phuongnd11/algofox-mcp#readme",
   "bugs": {
     "url": "https://github.com/phuongnd11/algofox-mcp/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
