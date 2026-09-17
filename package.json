@@ -21,7 +21,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node --test dist/test/*.test.js",
-    "lint:offline": "node scripts/check-offline.mjs"
+    "lint:offline": "node scripts/check-offline.mjs",
+    "prepublishOnly": "npm test && node scripts/check-offline.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
