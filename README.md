@@ -25,7 +25,7 @@ The [algofox-skill](https://github.com/phuongnd11/algofox-skill) plugin bundles 
 Or add just the server:
 
 ```bash
-claude mcp add algofox -- npx -y @algofoxdotapp/mcp
+claude mcp add algofox -- npx -y -p @algofoxdotapp/mcp algofox-mcp
 ```
 
 ### Cursor
@@ -33,7 +33,7 @@ claude mcp add algofox -- npx -y @algofoxdotapp/mcp
 `.cursor/mcp.json`:
 
 ```json
-{ "mcpServers": { "algofox": { "command": "npx", "args": ["-y", "@algofoxdotapp/mcp"] } } }
+{ "mcpServers": { "algofox": { "command": "npx", "args": ["-y", "-p", "@algofoxdotapp/mcp", "algofox-mcp"] } } }
 ```
 
 ### Codex
@@ -43,7 +43,7 @@ claude mcp add algofox -- npx -y @algofoxdotapp/mcp
 ```toml
 [mcp_servers.algofox]
 command = "npx"
-args = ["-y", "@algofoxdotapp/mcp"]
+args = ["-y", "-p", "@algofoxdotapp/mcp", "algofox-mcp"]
 ```
 
 For clients without skills, copy the coach block from [AGENTS.md](AGENTS.md) into your project's `AGENTS.md` / rules file so the agent behaves like an interviewer instead of solving problems for you.
