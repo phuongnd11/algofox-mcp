@@ -1,15 +1,15 @@
 {
   "name": "@algofox/mcp",
   "version": "0.1.0",
-  "description": "AlgoFox for your terminal coding agent \u2014 practice coding interviews fully offline. MCP server + CLI.",
+  "description": "AlgoFox for your terminal coding agent — practice coding interviews fully offline. MCP server + CLI.",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=18"
   },
   "bin": {
-    "algofox-mcp": "./dist/src/bin/server.js",
-    "algofox": "./dist/src/bin/cli.js"
+    "algofox-mcp": "dist/src/bin/server.js",
+    "algofox": "dist/src/bin/cli.js"
   },
   "files": [
     "dist/src",
