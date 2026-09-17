@@ -25,7 +25,7 @@ The [algofox-skill](https://github.com/phuongnd11/algofox-skill) plugin bundles 
 Or add just the server:
 
 ```bash
-claude mcp add algofox -- npx -y @algofox/mcp
+claude mcp add algofox -- npx -y @algofoxdotapp/mcp
 ```
 
 ### Cursor
@@ -33,7 +33,7 @@ claude mcp add algofox -- npx -y @algofox/mcp
 `.cursor/mcp.json`:
 
 ```json
-{ "mcpServers": { "algofox": { "command": "npx", "args": ["-y", "@algofox/mcp"] } } }
+{ "mcpServers": { "algofox": { "command": "npx", "args": ["-y", "@algofoxdotapp/mcp"] } } }
 ```
 
 ### Codex
@@ -43,7 +43,7 @@ claude mcp add algofox -- npx -y @algofox/mcp
 ```toml
 [mcp_servers.algofox]
 command = "npx"
-args = ["-y", "@algofox/mcp"]
+args = ["-y", "@algofoxdotapp/mcp"]
 ```
 
 For clients without skills, copy the coach block from [AGENTS.md](AGENTS.md) into your project's `AGENTS.md` / rules file so the agent behaves like an interviewer instead of solving problems for you.
@@ -53,10 +53,10 @@ For clients without skills, copy the coach block from [AGENTS.md](AGENTS.md) int
 Progress without opening an agent:
 
 ```bash
-npx -p @algofox/mcp algofox status     # resume card
-npx -p @algofox/mcp algofox progress   # full problem list
-npx -p @algofox/mcp algofox history    # recent activity
-npx -p @algofox/mcp algofox resume     # ready-to-paste agent prompt
+npx -p @algofoxdotapp/mcp algofox status     # resume card
+npx -p @algofoxdotapp/mcp algofox progress   # full problem list
+npx -p @algofoxdotapp/mcp algofox history    # recent activity
+npx -p @algofoxdotapp/mcp algofox resume     # ready-to-paste agent prompt
 ```
 
 ## What's inside

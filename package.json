@@ -1,5 +1,5 @@
 {
-  "name": "@algofox/mcp",
+  "name": "@algofoxdotapp/mcp",
   "version": "0.1.0",
   "description": "AlgoFox for your terminal coding agent — practice coding interviews fully offline. MCP server + CLI.",
   "license": "MIT",
